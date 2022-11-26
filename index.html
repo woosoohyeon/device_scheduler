@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        li{
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li>A : 정재훈 → Seller Center 먼저 확인 (iOS Web)</li>
+        <li>B : 우수현 → Seller Center 먼저 확인 (iOS Liff)</li>
+        <li>C : 서나리 → ECMall 먼저 확인 (AND Web)</li>
+        <li>D : 채소연 → ECMall 먼저 확인 (AND Liff)</li>
+    </ul>
+    <button onclick="prev()">prev</button>
+    <button onclick="next()">next</button>
+
+    <script defer>
+        nameList=["정재훈", "우수현" ,"서나리","채소연"];
+        deviceList=["iOS Web","iOS Liff","AND Web","AND Liff"];
+        
+        let starting_day = new Date("2022-11-21");
+        let now_day = new Date();
+
+        let count = parseInt(parseInt((now_day-starting_day)/ 1000 / 60 / 60 / 24)/14);
+
+        for(let i=0;i<count;i++){
+            let temp1 = nameList.pop();
+            nameList.unshift(temp1);
+
+            let temp2 = deviceList.shift();
+            deviceList.push(temp2);
+        }
+
+        const prev = ()=>{
+            let ultag = document.getElementsByTagName("ul")[0];
+            let liList = ultag.children;
+
+            for(let i=0;i<4;i++){
+                if(liList[i].innerText.indexOf("정재훈") != -1){
+                    i-1 == -1 ? pushList_reverse(3,"정재훈",nameList) : pushList_reverse(i-1,"정재훈",nameList);
+                    UpdateText(liList);
+                    break;
+                }
+            }
+
+            for(let i=0;i<4;i++){
+                if(liList[i].innerText.indexOf("iOS Web") != -1){
+                    pushList((i+1)%4,"iOS Web",deviceList); 
+                    UpdateText(liList);
+                    break;
+                }
+            }
+        };
+
+        const next = ()=>{
+            let ultag = document.getElementsByTagName("ul")[0];
+            let liList = ultag.children;
+
+            for(let i=0;i<4;i++){
+                if(liList[i].innerText.indexOf("정재훈") != -1){
+                    pushList((i+1)%4,"정재훈",nameList); 
+                    UpdateText(liList);
+                    break;
+                }
+            }
+
+            for(let i=0;i<4;i++){
+                if(liList[i].innerText.indexOf("iOS Web") != -1){
+                    i-1 == -1 ? pushList_reverse(3,"iOS Web",deviceList) : pushList_reverse(i-1,"iOS Web",deviceList);
+                    UpdateText(liList);
+                    break;
+                }
+            }
+        };
+
+        const pushList = (i,name,list)=>{
+            while(list[i] != name){
+                let temp = list.pop();
+                list.unshift(temp);
+            }
+        };
+
+        const pushList_reverse = (i,name,list)=>{
+            while(list[i] != name){
+                let temp = list.shift();
+                list.push(temp);
+            }
+        };
+
+        const UpdateText = (liList)=>{
+            liList[0].innerText = `A : ${nameList[0]} → Seller Center 먼저 확인 (${deviceList[0]})`;
+            liList[1].innerText = `B : ${nameList[1]} → Seller Center 먼저 확인 (${deviceList[1]})`;
+            liList[2].innerText = `C : ${nameList[2]} → ECMall 먼저 확인 (${deviceList[2]})`;
+            liList[3].innerText = `D : ${nameList[3]} → ECMall 먼저 확인 (${deviceList[3]})`;
+        }
+
+        UpdateText(document.getElementsByTagName("ul")[0].children);
+    </script>
+</body>
+</html>
